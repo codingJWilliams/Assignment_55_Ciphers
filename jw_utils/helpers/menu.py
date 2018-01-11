@@ -35,6 +35,7 @@ class Menu:
     tableText = self.name + "\n\n"
     tableText += jw_utils.graphics.tables.get_table(tableArray);
     while self.endLoop != True:
+      print("\n" * 150)
       print(tableText)
       choice = input("> ")
       opt = self.getOption(choice)

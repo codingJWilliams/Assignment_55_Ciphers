@@ -36,16 +36,16 @@ class Cipher:
                              ptDigit) in enumerate(ptOctet)]) for (i, # into binary and xor it against an
                              ptOctet) in enumerate(plainTextOctets)] # array (keyOctets) that is longer than the
         xorCompleteInts = [int(x, base=2) for x in xorCompleteOctets] # plaintext with each element a string of
-        xorCompleteHex = [format(k, 'x') for k in xorCompleteInts] # length 8 with a binary encoded integer
-        xorCompleteB64 = \
-            base64.b85encode(bytes(' '.join(xorCompleteHex), 'utf-8')) # Converts the hex encoded encrypted input into base85 for compactness
+        #xorCompleteHex = [format(k, 'x') for k in xorCompleteInts] # length 8 with a binary encoded integer
+        #xorCompleteHex = str(bytearray(xorCompleteInts))
+        xorCompleteHex = "".join([chr(x) for x in xorCompleteInts])
+        xorCompleteB64 = base64.b85encode(bytes(xorCompleteHex, 'utf-8')) # Converts the hex encoded encrypted input into base85 for compactness
         return xorCompleteB64.decode('utf-8')
 
     def decode(string, key):
-
         xorCompleteHex = base64.b85decode(string.encode('utf-8'
-                )).decode('utf-8').split(' ')
-        xorCompleteInts = [int(x, base=16) for x in xorCompleteHex]
+                )).decode('utf-8')
+        xorCompleteInts = [ord(x) for x in xorCompleteHex]
         xorCompleteOctets = [format(x, 'b').rjust(8).replace(' ', '0')
                              for x in xorCompleteInts]
         keyOctets = [format(x, 'b').rjust(8).replace(' ', '0') for x in
@@ -83,8 +83,5 @@ class Cipher:
 
         return bool(int(a) ^ int(b))
 
-
 if __name__ == '__main__':
     print (doctest.testmod())
-
-			
